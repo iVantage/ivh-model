@@ -2,7 +2,7 @@
 
 > Models for JavaScript
 
-Super lightweight and largerly inspired by ExtJS data models.
+Super lightweight and largely inspired by ExtJS data models.
 
 `IvhModel` allows you to convert value objects into robust, immutable models.
 It protects your app from API changes and provides a nice abstraction layer for
