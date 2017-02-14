@@ -57,6 +57,11 @@ const t1 = new Thing1(opts)
 // Using IvhMode.create
 const t2 = Thing1.create(opts)
 
+// Note IvhModel.create will return a factory function when called without
+// arguments. This is handy for giving directly to functions like
+// Array.prototype.map.
+const models = [opts, opts].map(IvhModel.create())
+
 t1.get('alias')
 // --> 'Vageta'
 
@@ -131,7 +136,7 @@ class MyBase extends IvhModel {
     return fetch(this.endpoint, {
         body: JSON.stringify(where)
       })
-      .then(resp => resp.json().map(this.create))
+      .then(resp => resp.json().map(this.create()))
   }
 }
 

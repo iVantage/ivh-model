@@ -12,7 +12,16 @@ describe('IvhModel', function() {
 
   it('should have method to create new models', function() {
     expect(IvhModel.create).to.be.an.instanceof(Function)
-    expect(IvhModel.create()).to.be.an.instanceof(IvhModel)
+    expect(IvhModel.create({})).to.be.an.instanceof(IvhModel)
+  })
+
+  it('should be able to create instances with Array#map', function() {
+    const optsAndOpts = [{}, {}, {}]
+    const models = optsAndOpts.map(IvhModel.create())
+    expect(models.length).to.equal(3)
+    models.forEach(m => {
+      expect(m).to.be.an.instanceof(IvhModel)
+    })
   })
 
   describe('extended', function() {
