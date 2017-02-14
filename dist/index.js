@@ -13,9 +13,16 @@ var IvhModel = function () {
 
     /**
      * An alternative constructor for functional greatness
+     *
+     * Note the alternate usage, when called without arguments we get back a
+     * factory function instead. This is to support usages such as:
+     *
+     * ```
+     * const models = valueObjects.map(IvhModel.create())
+     * ```
      */
     value: function create(opts) {
-      return new this(opts);
+      return opts ? new this(opts) : this.create.bind(this);
     }
 
     /**
