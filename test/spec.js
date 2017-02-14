@@ -17,7 +17,7 @@ describe('IvhModel', function() {
 
   it('should be able to create instances with Array#map', function() {
     const optsAndOpts = [{}, {}, {}]
-    const models = optsAndOpts.map(IvhModel.create())
+    const models = optsAndOpts.map(IvhModel.create)
     expect(models.length).to.equal(3)
     models.forEach(m => {
       expect(m).to.be.an.instanceof(IvhModel)

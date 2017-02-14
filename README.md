@@ -57,9 +57,7 @@ const t1 = new Thing1(opts)
 // Using IvhMode.create
 const t2 = Thing1.create(opts)
 
-// Note IvhModel.create will return a factory function when called without
-// arguments. This is handy for giving directly to functions like
-// Array.prototype.map.
+// IvhMode.create also works when handed off to e.g. Array.prototype.map
 const models = [opts, opts].map(IvhModel.create())
 
 t1.get('alias')

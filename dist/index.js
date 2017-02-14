@@ -8,28 +8,6 @@ var Immutable = require('immutable');
 
 var IvhModel = function () {
   _createClass(IvhModel, null, [{
-    key: 'create',
-
-
-    /**
-     * An alternative constructor for functional greatness
-     *
-     * Note the alternate usage, when called without arguments we get back a
-     * factory function instead. This is to support usages such as:
-     *
-     * ```
-     * const models = valueObjects.map(IvhModel.create())
-     * ```
-     */
-    value: function create(opts) {
-      return opts ? new this(opts) : this.create.bind(this);
-    }
-
-    /**
-     * Parses the given `opts` hash in the context of `fields`
-     */
-
-  }, {
     key: 'fields',
 
     /**
@@ -103,10 +81,41 @@ var IvhModel = function () {
     get: function get() {
       return [];
     }
+
+    /**
+     * An alternative constructor for functional greatness
+     *
+     * Note this is an accessor instead of a regular static function so that we
+     * can bind the returned function to our constructor and not worry about how
+     * it is invoked.
+     *
+     * I.e.
+     *
+     * ```
+     * [stuff].map(IvhModel.create)
+     * ```
+     *
+     * Should still work.
+     */
+
+  }, {
+    key: 'create',
+    get: function get() {
+      var _this = this;
+
+      return function (opts) {
+        return new _this(opts);
+      };
+    }
+
+    /**
+     * Parses the given `opts` hash in the context of `fields`
+     */
+
   }]);
 
   function IvhModel() {
-    var _this = this;
+    var _this2 = this;
 
     var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -152,7 +161,7 @@ var IvhModel = function () {
     fields.filter(function (f) {
       return f.hasOwnProperty('convert');
     }).forEach(function (f) {
-      _this.data = _this.data.set(f.name, f.convert(opts, _this));
+      _this2.data = _this2.data.set(f.name, f.convert(opts, _this2));
     });
   }
 
