@@ -1,6 +1,6 @@
 {
   "name": "ivh-model",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Models for JavaScript",
   "main": "dist/index.js",
   "files": [
