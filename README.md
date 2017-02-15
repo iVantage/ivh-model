@@ -58,7 +58,7 @@ const t1 = new Thing1(opts)
 const t2 = Thing1.create(opts)
 
 // IvhMode.create also works when handed off to e.g. Array.prototype.map
-const models = [opts, opts].map(IvhModel.create())
+const models = [opts, opts].map(IvhModel.create)
 
 t1.get('alias')
 // --> 'Vageta'
