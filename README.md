@@ -134,7 +134,7 @@ class MyBase extends IvhModel {
     return fetch(this.endpoint, {
         body: JSON.stringify(where)
       })
-      .then(resp => resp.json().map(this.create()))
+      .then(resp => resp.json().map(this.create))
   }
 }
 
