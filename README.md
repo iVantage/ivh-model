@@ -175,6 +175,33 @@ t2.get('power')
 // --> 11
 ```
 
+After setting all those values you might want to save your changes back to a
+database somewhere.
+
+```javascript
+class SillyThing extends IvhModel {
+  static get fields() {
+    return [
+      'id',
+      {
+        name: 'alias',
+        mapping: 'attributes.Label'
+      }, {
+        name: 'power',
+        defaultValue: 9001
+      }
+    ]
+  }
+}
+
+let s1 = SillyThing.create()
+s1 = s1.set('alias', 'Goku')
+s1.extract()
+// --> {power: 9001, attributes: {Label: 'Goku'}}
+```
+
+Note that fields with a `convert` function will not be extracted.
+
 See the tests and comments in `lib/index.js` for more examples.
 
 ## License

@@ -89,7 +89,14 @@ describe('IvhModel', function() {
   describe('setters', function() {
     class SetterSub extends IvhModel {
       static get fields() {
-        return ['foo', 'bar']
+        return [
+          'foo',
+          'bar',
+          {
+            name: 'wowza',
+            convert: (opts, model) => model.get('foo') + model.get('bar')
+          }
+        ]
       }
     }
 
@@ -118,6 +125,53 @@ describe('IvhModel', function() {
         .set('bar', 10)
       expect(m2.get('foo')).to.equal(5)
       expect(m2.get('bar')).to.equal(10)
+    })
+
+    it('should be able to set a calculated field', function() {
+      const m2 = m.set('wowza', 100)
+      expect(m2.get('wowza')).to.equal(100)
+    })
+  })
+
+  describe('extract', function() {
+    class ExtracSub extends IvhModel {
+      static get fields() {
+        return [
+          'foo',
+          {
+            name: 'bar',
+            mapping: 'attributes.bar'
+          }, {
+            name: 'wowza',
+            convert: (opts, model) => model.get('foo') + model.get('bar')
+          }
+        ]
+      }
+    }
+
+    let m
+
+    beforeEach(function() {
+      m = new ExtracSub({
+        foo: 1,
+        attributes: {
+          bar: 2
+        }
+      })
+    })
+
+    it('should provide a method to get back raw options', function() {
+      expect(m.extract()).to.deep.equal({
+        foo: 1,
+        attributes: {
+          bar: 2
+        }
+      })
+    })
+
+    it('should respect values that have been set', function() {
+      m = m.set('bar', 9)
+      expect(m.extract()).to.have.deep.property('attributes.bar', 9)
     })
   })
 

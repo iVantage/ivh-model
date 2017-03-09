@@ -83,6 +83,25 @@ var IvhModel = function () {
     }
 
     /**
+     * Internal helper to put feids in a convenient format
+     *
+     * Basically ensured everything is an object with (minimally) a name and a
+     * mapping
+     */
+
+  }, {
+    key: 'normalizedFields',
+    get: function get() {
+      return this.fields.map(function (f) {
+        if ('string' === typeof f) {
+          f = { name: f };
+        }
+        f.mapping = f.mapping || f.name;
+        return f;
+      });
+    }
+
+    /**
      * An alternative constructor for functional greatness
      *
      * Note this is an accessor instead of a regular static function so that we
@@ -121,14 +140,7 @@ var IvhModel = function () {
 
     _classCallCheck(this, IvhModel);
 
-    var fields = this.constructor.fields.map(function (f) {
-      if ('string' === typeof f) {
-        f = { name: f };
-      }
-      f.mapping = f.mapping || f.name;
-      return f;
-    });
-
+    var fields = this.constructor.normalizedFields;
     var data = {};
 
     // Apply our default values as a base layer.
@@ -188,6 +200,38 @@ var IvhModel = function () {
       var newModel = this.constructor.create();
       newModel.data = Object.assign({}, this.data, _defineProperty({}, fieldName, newValue));
       return newModel;
+    }
+
+    /**
+     * Get data back out in a way that looks like how it went in
+     *
+     * This is meant to facilitate e.g. sending changes back to a server after
+     * making updates to your model locally.
+     */
+
+  }, {
+    key: 'extract',
+    value: function extract() {
+      var _this3 = this;
+
+      var fields = this.constructor.normalizedFields;
+      var extractedData = {};
+
+      // Collect data from non-converted fields which have been set
+      fields.filter(function (f) {
+        return !f.hasOwnProperty('convert');
+      }).filter(function (f) {
+        return _this3.data.hasOwnProperty(f.name);
+      }).forEach(function (f) {
+        var base = extractedData;
+        f.mapping.split('.').filter(function (attr) {
+          return attr.length;
+        }).forEach(function (attr, ix, arr) {
+          base = base[attr] = ix === arr.length - 1 ? _this3.data[f.name] : base[attr] || {};
+        });
+      });
+
+      return extractedData;
     }
   }]);
 
