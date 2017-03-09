@@ -84,6 +84,23 @@ describe('IvhModel', function() {
     it('should not clobber IvhModel field lists', function() {
       expect(IvhModel.fields.length).to.equal(0)
     })
+  })
+
+  describe('setters', function() {
+    class SetterSub extends IvhModel {
+      static get fields() {
+        return ['foo', 'bar']
+      }
+    }
+
+    let m
+
+    beforeEach(function() {
+      m = new SetterSub({
+        foo: 1,
+        bar: 2
+      })
+    })
 
     it('should be able to set a value', function() {
       const m2 = m.set('foo', 5)
@@ -93,6 +110,14 @@ describe('IvhModel', function() {
     it('should not modify the original model when setting', function() {
       m.set('foo', 5)
       expect(m.get('foo')).to.equal(1)
+    })
+
+    it('should allow chaining set calls', function() {
+      const m2 = m
+        .set('foo', 5)
+        .set('bar', 10)
+      expect(m2.get('foo')).to.equal(5)
+      expect(m2.get('bar')).to.equal(10)
     })
   })
 
