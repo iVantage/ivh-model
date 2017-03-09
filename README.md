@@ -156,7 +156,26 @@ Thingy.create({id: 1, alias: 'Goku'}).watsDat()
 // --> 'a senzu bean'
 ```
 
-See the tests and comments in `lib/index.js` for more usage details.
+You can set model attributes. This will return a new model with the updated
+values rather than mutating the given model.
+
+```javascript
+const t1 = Thing1.create({
+  id: 'foo',
+  alias: 'Foo',
+  power: 6
+})
+
+const t2 = t1.set('power', 11)
+
+t1.get('power')
+// --> 6
+
+t2.get('power')
+// --> 11
+```
+
+See the tests and comments in `lib/index.js` for more examples.
 
 ## License
 

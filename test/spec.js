@@ -85,6 +85,15 @@ describe('IvhModel', function() {
       expect(IvhModel.fields.length).to.equal(0)
     })
 
+    it('should be able to set a value', function() {
+      const m2 = m.set('foo', 5)
+      expect(m2.get('foo')).to.equal(5)
+    })
+
+    it('should not modify the original model when setting', function() {
+      m.set('foo', 5)
+      expect(m.get('foo')).to.equal(1)
+    })
   })
 
 })
