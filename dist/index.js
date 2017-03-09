@@ -2,9 +2,9 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var Immutable = require('immutable');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var IvhModel = function () {
   _createClass(IvhModel, null, [{
@@ -155,13 +155,13 @@ var IvhModel = function () {
       }
     });
 
-    this.data = Immutable.Map(data);
+    this.data = data;
 
     // Collected converted fields,
     fields.filter(function (f) {
       return f.hasOwnProperty('convert');
     }).forEach(function (f) {
-      _this2.data = _this2.data.set(f.name, f.convert(opts, _this2));
+      _this2.data[f.name] = f.convert(opts, _this2);
     });
   }
 
@@ -174,7 +174,20 @@ var IvhModel = function () {
   _createClass(IvhModel, [{
     key: 'get',
     value: function get(fieldName) {
-      return this.data.get(fieldName);
+      return this.data[fieldName];
+    }
+
+    /**
+     * Sets should return a new model instance with the updated value rather than
+     * mutate this model
+     */
+
+  }, {
+    key: 'set',
+    value: function set(fieldName, newValue) {
+      var newModel = this.constructor.create();
+      newModel.data = Object.assign({}, this.data, _defineProperty({}, fieldName, newValue));
+      return newModel;
     }
   }]);
 
