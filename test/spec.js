@@ -131,6 +131,28 @@ describe('IvhModel', function() {
       const m2 = m.set('wowza', 100)
       expect(m2.get('wowza')).to.equal(100)
     })
+
+    it('should not throw when convert fn expects deep properties', function() {
+      class Foo extends IvhModel {
+        static get fields() {
+          return ['alias', {
+            name: 'blargus',
+            convert: opts => opts.attrs.deep.bar
+          }]
+        }
+      }
+
+      const f = new Foo({
+        alias: 'Alias',
+        attrs: {
+          deep: {
+            bar: 'Unicorn'
+          }
+        }
+      })
+
+      expect(() => f.set('alias', 'Narwhal')).to.not.throw(Error)
+    })
   })
 
   describe('extract', function() {

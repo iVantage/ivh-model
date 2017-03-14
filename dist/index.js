@@ -141,7 +141,8 @@ var IvhModel = function () {
     _classCallCheck(this, IvhModel);
 
     var fields = this.constructor.normalizedFields;
-    var data = {};
+    var data = this.data = {};
+    this.rawData = opts;
 
     // Apply our default values as a base layer.
     fields.filter(function (f) {
@@ -167,13 +168,11 @@ var IvhModel = function () {
       }
     });
 
-    this.data = data;
-
     // Collected converted fields,
     fields.filter(function (f) {
       return f.hasOwnProperty('convert');
     }).forEach(function (f) {
-      _this2.data[f.name] = f.convert(opts, _this2);
+      data[f.name] = f.convert(opts, _this2);
     });
   }
 
@@ -197,7 +196,7 @@ var IvhModel = function () {
   }, {
     key: 'set',
     value: function set(fieldName, newValue) {
-      var newModel = this.constructor.create();
+      var newModel = this.constructor.create(this.rawData);
       newModel.data = Object.assign({}, this.data, _defineProperty({}, fieldName, newValue));
       return newModel;
     }
