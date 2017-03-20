@@ -159,11 +159,11 @@ var IvhModel = function () {
       f.mapping.split('.').filter(function (attr) {
         return attr.length;
       }).forEach(function (attr) {
-        if ('undefined' !== typeof val) {
+        if (null !== val && 'undefined' !== typeof val) {
           val = val[attr];
         }
       });
-      if ('undefined' !== typeof val) {
+      if (null !== val && 'undefined' !== typeof val) {
         data[f.name] = val;
       }
     });

@@ -84,6 +84,21 @@ describe('IvhModel', function() {
     it('should not clobber IvhModel field lists', function() {
       expect(IvhModel.fields.length).to.equal(0)
     })
+
+    it('should not throw when null values are found', function() {
+      class Nully extends IvhModel {
+        static get fields() {
+          return [{
+            name: 'foo',
+            mapping: 'stuff.stuff.stuff'
+          }]
+        }
+      }
+
+      expect(() => {
+        Nully.create({stuff: null})
+      }).to.not.throw(Error)
+    })
   })
 
   describe('setters', function() {
