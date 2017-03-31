@@ -128,13 +128,33 @@ var IvhModel = function () {
     }
 
     /**
+     * An alternate constructor for convenience using attribute names
+     *
+     * This is essentially shorthand for create().set(...).set(...)...
+     *
+     * Your model must be create-able with an empty hash
+     */
+
+  }, {
+    key: 'createSet',
+    get: function get() {
+      var _this2 = this;
+
+      return function (opts) {
+        return Object.keys(opts).reduce(function (m, key) {
+          return m.set(key, opts[key]);
+        }, new _this2());
+      };
+    }
+
+    /**
      * Parses the given `opts` hash in the context of `fields`
      */
 
   }]);
 
   function IvhModel() {
-    var _this2 = this;
+    var _this3 = this;
 
     var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -172,7 +192,7 @@ var IvhModel = function () {
     fields.filter(function (f) {
       return f.hasOwnProperty('convert');
     }).forEach(function (f) {
-      data[f.name] = f.convert(opts, _this2);
+      data[f.name] = f.convert(opts, _this3);
     });
   }
 
@@ -211,7 +231,7 @@ var IvhModel = function () {
   }, {
     key: 'extract',
     value: function extract() {
-      var _this3 = this;
+      var _this4 = this;
 
       var fields = this.constructor.normalizedFields;
       var extractedData = {};
@@ -220,13 +240,13 @@ var IvhModel = function () {
       fields.filter(function (f) {
         return !f.hasOwnProperty('convert');
       }).filter(function (f) {
-        return _this3.data.hasOwnProperty(f.name);
+        return _this4.data.hasOwnProperty(f.name);
       }).forEach(function (f) {
         var base = extractedData;
         f.mapping.split('.').filter(function (attr) {
           return attr.length;
         }).forEach(function (attr, ix, arr) {
-          base = base[attr] = ix === arr.length - 1 ? _this3.data[f.name] : base[attr] || {};
+          base = base[attr] = ix === arr.length - 1 ? _this4.data[f.name] : base[attr] || {};
         });
       });
 
