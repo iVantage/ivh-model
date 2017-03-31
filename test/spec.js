@@ -212,4 +212,29 @@ describe('IvhModel', function() {
     })
   })
 
+  describe('createSet', function() {
+    class CSSub extends IvhModel {
+      static get fields() {
+        return [{
+          name: 'foo',
+          mapping: 'f.o.o'
+        }]
+      }
+    }
+
+    it('should provide an alternate with model attribute names', function() {
+      const m = CSSub.createSet({
+        foo: 'bar'
+      })
+      expect(m.get('foo')).to.equal('bar')
+    })
+
+    it('should still be extactable', function() {
+      const m = CSSub.createSet({
+        foo: 'bar'
+      })
+      expect(m.extract()).to.have.deep.property('f.o.o', 'bar')
+    })
+  })
+
 })

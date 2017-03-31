@@ -200,6 +200,30 @@ s1.extract()
 // --> {power: 9001, attributes: {Label: 'Goku'}}
 ```
 
+You can chain `set` calls but sometimes it's easier to just create a new model
+from scratch using model attributes:
+
+```javascript
+class FancyThing extends IvhModel {
+  static get fields() {
+    return [{
+      name: 'alias',
+      mapping: 'foo.bar.barus'
+    }]
+  }
+}
+
+const fancy = FancyThing.createSet({
+  alias: 'P Fancy'
+})
+
+fancy.get('alias')
+// --> 'P Fancy'
+
+fancy.extract()
+// --> {foo: {bar: {barus: 'P Fancy'}}}
+```
+
 Note that fields with a `convert` function will not be extracted.
 
 See the tests and comments in `lib/index.js` for more examples.
