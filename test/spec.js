@@ -212,6 +212,27 @@ describe('IvhModel', function() {
     })
   })
 
+  describe('custom extract', function() {
+    class CustomExtract extends IvhModel {
+      static get fields() {
+        return ['a']
+      }
+      static extract(extracted, model) {
+        extracted.foo1 = extracted.a + '1'
+        extracted.foo2 = model.get('a') + '2'
+      }
+    }
+
+    it('should provide a hook for modifying extracted content', function() {
+      const m = CustomExtract.create({a: 'bar'})
+      expect(m.extract()).to.deep.equal({
+        a: 'bar',
+        foo1: 'bar1',
+        foo2: 'bar2'
+      })
+    })
+  })
+
   describe('createSet', function() {
     class CSSub extends IvhModel {
       static get fields() {

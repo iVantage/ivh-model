@@ -200,6 +200,36 @@ s1.extract()
 // --> {power: 9001, attributes: {Label: 'Goku'}}
 ```
 
+Sometimes you need to massage your extracted content.
+
+```javascript
+class SillyThing extends IvhModel {
+  static get fields() {
+    return [
+      'id',
+      {
+        name: 'alias',
+        mapping: 'attributes.Label'
+      }, {
+        name: 'power',
+        defaultValue: 9001
+      }
+    ]
+  }
+
+  static extract(extractedData, sillyModel) {
+    const alias = sillyModel.get('alias')
+    const power = extractedData.power
+    extractedData.prettyPrint = alias + ' ' + power
+  }
+}
+
+let s1 = SillyThing.create()
+s1 = s1.set('alias', 'Goku')
+s1.extract().prettyPrint
+// --> 'Goku 9001'
+```
+
 You can chain `set` calls but sometimes it's easier to just create a new model
 from scratch using model attributes:
 

@@ -8,6 +8,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var IvhModel = function () {
   _createClass(IvhModel, null, [{
+    key: 'extract',
+
+
+    /**
+     * Override this method to modify extracted content before it is returned
+     */
+    value: function extract(extractedData, model) {} // eslint-disable-line no-unused-vars
+    // Hi! I'm just a stub.
+
+
+    /**
+     * Parses the given `opts` hash in the context of `fields`
+     */
+
+  }, {
     key: 'fields',
 
     /**
@@ -146,11 +161,6 @@ var IvhModel = function () {
         }, new _this2());
       };
     }
-
-    /**
-     * Parses the given `opts` hash in the context of `fields`
-     */
-
   }]);
 
   function IvhModel() {
@@ -249,6 +259,8 @@ var IvhModel = function () {
           base = base[attr] = ix === arr.length - 1 ? _this4.data[f.name] : base[attr] || {};
         });
       });
+
+      this.constructor.extract(extractedData, this);
 
       return extractedData;
     }
