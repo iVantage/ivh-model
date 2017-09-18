@@ -232,6 +232,18 @@ var IvhModel = function () {
     }
 
     /**
+     * Clone the given istance
+     */
+
+  }, {
+    key: 'clone',
+    value: function clone() {
+      var newModel = this.constructor.create(this.rawData);
+      newModel.data = Object.assign({}, this.data);
+      return newModel;
+    }
+
+    /**
      * Get data back out in a way that looks like how it went in
      *
      * This is meant to facilitate e.g. sending changes back to a server after

@@ -258,4 +258,39 @@ describe('IvhModel', function() {
     })
   })
 
+  describe('clone', function() {
+    class Sub extends IvhModel {
+      static get fields() {
+        return [{
+          name: 'foo',
+          mapping: 'f.oo'
+        }, {
+          name: 'bar',
+          defaultValue: 5
+        }, {
+          name: 'wowza',
+          convert: (opts, model) => model.get('bar') + 6
+        }]
+      }
+    }
+
+    it('should return a new instance', () => {
+      const m1 = new Sub({
+        f: { oo: 1 }
+      })
+      const m2 = m1.clone()
+      expect(m1).to.not.equal(m2)
+    })
+
+    it('should copy all attributes', () => {
+      const m1 = new Sub({
+        f: { oo: 1 }
+      })
+      const m2 = m1.clone()
+      expect(m2.get('foo')).to.equal(1)
+      expect(m2.get('bar')).to.equal(5)
+      expect(m2.get('wowza')).to.equal(11)
+    })
+  })
+
 })
