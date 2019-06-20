@@ -208,7 +208,7 @@ describe('IvhModel', function() {
 
     it('should respect values that have been set', function() {
       m = m.set('bar', 9)
-      expect(m.extract()).to.have.deep.property('attributes.bar', 9)
+      expect(m.extract()).to.have.nested.property('attributes.bar', 9)
     })
   })
 
@@ -250,11 +250,12 @@ describe('IvhModel', function() {
       expect(m.get('foo')).to.equal('bar')
     })
 
-    it('should still be extactable', function() {
+    it('should still be extractable', function() {
       const m = CSSub.createSet({
         foo: 'bar'
       })
-      expect(m.extract()).to.have.deep.property('f.o.o', 'bar')
+      //expect(m.extract()).to.have.deep.property('f.o.o', 'bar')
+      expect(m.extract()).to.have.nested.property('f.o.o', 'bar')
     })
   })
 
