@@ -254,7 +254,6 @@ describe('IvhModel', function() {
       const m = CSSub.createSet({
         foo: 'bar'
       })
-      //expect(m.extract()).to.have.deep.property('f.o.o', 'bar')
       expect(m.extract()).to.have.nested.property('f.o.o', 'bar')
     })
   })
